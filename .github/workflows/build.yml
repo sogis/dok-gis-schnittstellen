@@ -31,7 +31,7 @@ jobs:
       - name: Release 
         run: |
           ls -la build/docs/asciidocPdf/
-          ./gradlew jreleaserRelease -i
+          ./gradlew jreleaserRelease -i -d
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
