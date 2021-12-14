@@ -119,7 +119,7 @@ Analog für Shapefiles und CSV gibt es in GRETL (mit gleichen Einschränkungen) 
 [bibliography]
 == Dokumente
 
-* [[[dataservice]]] https://geo.so.ch/api/data/v1/api/[https://geo.so.ch/api/data/v1/api/]
-* [[[cccservice]]] Konzept «Integration von Fach- und Geometrie-Daten»
-* [[[gretl]]] http://github.com/sogis/gretl[http://github.com/sogis/gretl]
-* [[[modellierungshandbuch]]] https://sogis.github.io/modellbasierte-datenerfassung-handbuch/[https://sogis.github.io/modellbasierte-datenerfassung-handbuch/]
+- [[[dataservice]]] https://geo.so.ch/api/data/v1/api/[https://geo.so.ch/api/data/v1/api/]
+- [[[cccservice]]] Konzept «Integration von Fach- und Geometrie-Daten»
+- [[[gretl]]] http://github.com/sogis/gretl[http://github.com/sogis/gretl]
+- [[[modellierungshandbuch]]] https://sogis.github.io/modellbasierte-datenerfassung-handbuch/[https://sogis.github.io/modellbasierte-datenerfassung-handbuch/]
