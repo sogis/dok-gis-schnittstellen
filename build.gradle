@@ -2,6 +2,7 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'org.asciidoctor.jvm.pdf' version '3.3.2'
     id "de.undercouch.download" version "4.1.2"
+    id 'org.jreleaser' version '0.9.1'
 }
 
 apply from: "$rootDir/gradle/versioning.gradle"
@@ -55,3 +56,24 @@ task deleteFonts(type: Delete) {
 
 asciidoctorPdf.dependsOn downloadFonts
 asciidoctorPdf.finalizedBy deleteFonts
+
+jreleaser {
+    project {
+        version: project.version
+    }
+    release {
+        github {
+            owner = 'sogis'
+            overwrite = true
+            apiEndpoint = 'https://api.github.com'
+        }
+    }
+    distributions {
+        app {
+            distributionType = 'BINARY'
+            artifact {
+                path = 'build/docs/asciidocPdf/gis-schnittstellen.pdf'
+            }
+        }
+    }
+}
