@@ -59,7 +59,7 @@ asciidoctorPdf.finalizedBy deleteFonts
 
 jreleaser {
     project {
-        version: project.version
+        version: "$project.version"
     }
     release {
         github {
