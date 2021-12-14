@@ -25,6 +25,7 @@ jobs:
           ./gradlew jreleaserRelease
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
+          JRELEASER_GITHUB_TOKEN: ${{ env.JRELEASER_GITHUB_TOKEN }}
       # - name: Push docker image
       #   run: |
       #     export CI_JOB_TIMESTAMP=$(date +%Y%m%dT%H%M%S)

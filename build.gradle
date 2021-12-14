@@ -58,6 +58,14 @@ asciidoctorPdf.dependsOn downloadFonts
 asciidoctorPdf.finalizedBy deleteFonts
 
 jreleaser {
+    project {
+        name: 'dok-gis-schnittstellen'
+        description: 'GIS-Schnittstellen'
+        website = 'https://agi.so.ch'
+        authors = ['edigonzales']
+        license = 'MIT'
+        docsUrl = 'https://github.com/sogis/dok-gis-schnittstellen'
+    }
     release {
         github {
             owner = 'sogis'
