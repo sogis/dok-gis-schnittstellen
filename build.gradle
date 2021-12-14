@@ -59,8 +59,8 @@ asciidoctorPdf.finalizedBy deleteFonts
 
 jreleaser {
     project {
-        name: 'dok-gis-schnittstellen'
-        description: 'GIS-Schnittstellen'
+        name = 'dok-gis-schnittstellen'
+        description = 'GIS-Schnittstellen'
         website = 'https://agi.so.ch'
         authors = ['edigonzales']
         license = 'MIT'
