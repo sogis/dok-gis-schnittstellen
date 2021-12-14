@@ -73,12 +73,9 @@ jreleaser {
             apiEndpoint = 'https://api.github.com'
         }
     }
-    distributions {
-        app {
-            distributionType = 'BINARY'
-            artifact {
-                path = 'build/docs/asciidocPdf/gis-schnittstellen.pdf'
-            }
+    files {
+        artifact {
+            path = 'build/docs/asciidocPdf/gis-schnittstellen.pdf'
         }
     }
 }
