@@ -58,9 +58,6 @@ asciidoctorPdf.dependsOn downloadFonts
 asciidoctorPdf.finalizedBy deleteFonts
 
 jreleaser {
-    project {
-        version: "$project.version"
-    }
     release {
         github {
             owner = 'sogis'
