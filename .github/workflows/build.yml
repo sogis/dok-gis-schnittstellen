@@ -20,8 +20,9 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: |
-          ./gradlew clean asciidoctorPdf
+          ./gradlew clean asciidoctorPdf jreleaserRelease
           ls -la build/docs/asciidocPdf/
+          ./gradlew jreleaserRelease
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
       # - name: Push docker image
