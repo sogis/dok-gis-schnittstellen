@@ -1,0 +1,125 @@
+= GIS-Schnittstellen
+:encoding: utf-8
+:toc: right
+:toc-title: Inhaltsverzeichnis 
+:author_name: Amt für Geoinformation Kanton Solothurn
+:author_email: agi@bd.so.ch
+:author: {author_name}
+:email: {author_email}
+:title-page:
+:sectnums:
+:chapter-label:
+:sectlinks:
+:sectanchors:
+:revdate: {docdate}
+:figure-caption: Abbildung
+
+== Einleitung
+Das Amt für Geoinformation betreibt die kantonale Geodateninfrastruktur. Ein wichtiger Bestandteil dieser Infrastruktur ist die zentrale Datenhaltung. Die Geodaten der kantonalen Verwaltung werden in Datenbanken gespeichert, die durch das AGI betrieben werden.
+
+Im Rahmen des Projektes «SO!GIS 2.0» hat sich gezeigt, dass Datenflüsse von und zu externen Fachanwendungen immer wichtiger und in der Anzahl zunehmen werden. Mit dem Fortschreiten diverser Umsetzungsprojekte konnten die vom AGI angebotenen Schnittstellen und die Werkzeuge definiert werden.
+
+Das vorliegende Dokument dient hauptsächlich als Übersicht für Anbieter von Fachanwendungen, die Daten von der kantonalen GDI beziehen, in diese Daten speichern wollen oder ihre Fachanwendung um eine GIS-Komponente erweitern wollen. Die genauen Spezifikationen der jeweiligen Schnittstellen und der Möglichkeiten der Werkzeuge sind in
+anderen Dokumenten beschrieben und zwingend zu konsultieren. Eine frühzeitige Einbindung des AGI in die Projekte bleibt ebenfalls notwendig. Vor allem auch um technische Missverständnissen vorzeubeugen (z.B. Welche Shapefile-Varianten werden unterstützt? Welche CSV-Konfigurationsmöglichkeiten gibt es?).
+
+Schnittstellen und die Werkzeuge könnten weiterentwickelt werden. Dies bedingt aber eine frühzeitige Planung.
+
+Der offizielle Bezugsrahmen der kantonalen Geodateninfrastruktur ist LV95. Die Unterstützung anderer Koordinatensystem (insbesondere beim Schreiben in die GDI) muss unbedingt vorzeitig abgeklärt werden.
+
+== Anwendungsfälle
+In den folgenden Kapiteln werden die verschiedenen Schnittstellen für die drei typische Anwendungsfälle aufgelistet. Eine kurze Beschreibung der Schnittstellen folgt in Kapitel <<schnittstellen>>.
+
+=== Daten beziehen
+Für den Anwendungsfall «Daten beziehen» stehen verschiedene Schnittstellen zur Verfügung:
+
+- WFS (Web Feature Service)
+- Data-Service
+- Datenbankbasierter Austausch
+- Dateibasierter Austausch
+
+=== Daten speichern
+Um Daten in die Datenbanken des AGI speichern zu können, stehen folgende Varianten zur Auswahl:
+
+- Editierfunktion im Web GIS Client
+- Data-Service
+- Client-Client-Context-Dienst (verwendet wiederum Data-Service zum Speichern der Daten)
+- Datenbankbasierter Austausch
+- Dateibasierter Austausch
+
+=== GIS-Komponente-Erweiterung
+Für die Erweiterung der Fachanwendung um eine GIS-Komponente stehen sämtliche Schnittstellen gemäss Kapitel 3 zur Verfügung. Im engeren Sinne sind zwei Ausprägungen von solchen Erweiterungen wahrscheinlich:
+
+- Verwendung von WMS/WMTS/WFS und/oder Data-Service zum Anzeigen von Karten und Editieren von Daten in der Fachanwendung.
+- Client-Client-Context-Dienst: Es werden Kontextinformationen zwischen dem Fachanwendungsclient und dem Web GIS Client ausgetauscht. Offensichtlichster Unterschied zur vorherigen Variante: Die Erfassung resp. das Editieren von Geometrie-Objekten geschieht im Web GIS Client des AGI.
+
+[#schnittstellen]
+== Schnittstellen
+
+=== WMS / WMTS / WFS
+Das AGI bietet die in den Datenbanken gespeicherten Geodaten als WMS und WFS an. Der Service ist durch das IAM des Kantons geschützt. Der Datenherr und/oder gesetzliche Vorgaben entscheiden, ob ein Datensatz öffentlich oder zugriffsgeschützt ist.
+
+WFS-T wird zurzeit nicht angeboten.
+
+Einige Layer sind als WMTS erhältlich. 
+
+=== Data-Service
+Sämtliche Geodaten in den Datenbanken des AGI können als RESTful-Service <<dataservice>> angeboten werden. Das Datenformat ist GeoJSON. Daten können mittels den HTTP-Befehlen GET, POST, PUT, DELETE gelesen, erzeugt, verändert und gelöscht werden.
+
+Es stehen einfache Filterfunktionen zur Verfügung.
+
+Der Service ist durch das IAM des Kantons geschützt.
+
+=== Editierfunktionen im Web GIS Client
+Im Web GIS Client können Layer editiert werden. Dabei wird der vom AGI angebotene RESTfulService verwendet. Es können Objekte erfasst, verändert und gelöscht werden. Der Funktionsumfang entspricht nicht dem eines Desktop-GIS, d.h. keine Snappingfunktionen und keine ausgereiften Formularfunktionen. 
+
+=== Client-Client-Context-Dienst (CCC-Dienst)
+Der CCC-Dienst <<cccservice>> dient dazu Kontextinformationen zwischen dem GUI der Fachanwendung (z.B. Axioma) und dem GUI des Web GIS Client auszutauschen (bidirektional). Der CCC-Dienst verwendet das WebSocket-Protokoll für den Austausch der Kontextinformationen. Durch die Verwendung des Data-Services können Daten in einem Cache beim AGI persistiert werden. 
+
+=== Datenbankbasierter Austausch
+Mit GRETL kann (theoretisch) aus beliebigen Datenbanken Daten gelesen und in Datenbanken geschrieben werden. Voraussetzung ist die Verfügbarkeit eines JDBC-Treibers. Zum jetzigen Zeitpunkt werden folgende Datenbanken unterstützt:
+
+- PostgreSQL
+- SQLite
+- Oracle
+- MSSQL
+
+Verantwortlich für diese Prozesse ist das AGI und sie werden auch durch das AGI orchestriert, d.h. das AGI liest aus seiner Datenbank und schreibt in eine fremde Datenbank resp. liest aus einer fremden Datenbank und importiert die Daten in seine Datenbank. Direktzugriff auf die Datenbanken mit Fremdanwendungen ist nicht möglich. Einzige Ausnahmen sind Einzelanwender, die mittels Excel und/oder Access einfache Auswertungen vornehmen. 
+
+=== Dateibasierter Datenaustausch
+Der Datenaustausch findet dateibasiert statt. Dateien können sowohl von der GDI für Fachanwendungen bereitgestellt werden oder aber als Datei in die GDI importiert werden. Die Orchestrierung des Prozesses wird mit GRETL <<gretl>> durchgeführt. 
+
+Unterstützte Dateiformate: 
+
+- INTERLIS 1 und 2.3 <<modellierungshandbuch>>
+- ESRI Shapefiles
+- CSV (konfigurierbar)
+- (Geo)Json: siehe <<spezialfallgeojson>> 
+- GeoPackage: siehe <<spezialfallgeopackage>>
+
+Datenablage Import:
+
+- HTTP: Die Daten liegen auf einem für das AGI erreichbaren Server und können mittels HTTP-GET-Befehlen heruntergeladen werden.
+- (S)FTP: Die Daten liegen in einem vom Fachanwendungshersteller oder -betreiber bereitgestellten (S)FTP-Server.
+- Filesystem: Die Daten liegen auf einem für das AGI erreichbaren Filesystem des Kantons.
+
+Datenablage Export:
+
+- (S)FTP: Die Daten werden vom AGI auf einen vom Fachanwendungshersteller bereitgestellten FTP-Server hochgeladen
+- Filesystem: Die Daten werden auf das Filesystem des AGI kopiert. 
+
+[#spezialfallgeojson]
+==== Spezialfall (Geo)Json
+Die Unterstützung von (Geo)Json in GRETL - analog Shapefiles und CSV - ist in Vorbereitung. Es besteht bereits die Möglichkeit mit einem einfacheren, bestehenden GRETL-Task die (Geo)Json-Datei in eine einzelne Text-Spalte in die Datenbank-Tabelle zu importieren und anschliessend mit Datenbankfunktionen zu prozessieren.
+
+[#spezialfallgeopackage]
+==== Spezialfall GeoPackage
+Analog für Shapefiles und CSV gibt es in GRETL (mit gleichen Einschränkungen) einen GeoPackage-Import und -Export-Task. Diese Variante ist aber dank der Möglichkeit mit ili2gpkg einfach INTERLIS-Daten aus GeoPackage-Dateien herzustellen, nicht empfehlenswert.
+
+
+[bibliography]
+== Dokumente
+
+* [[[dataservice]]] https://geo.so.ch/api/data/v1/api/[https://geo.so.ch/api/data/v1/api/]
+* [[[cccservice]]] Konzept «Integration von Fach- und Geometrie-Daten»
+* [[[gretl]]] http://github.com/sogis/gretl[http://github.com/sogis/gretl]
+* [[[modellierungshandbuch]]] https://sogis.github.io/modellbasierte-datenerfassung-handbuch/[https://sogis.github.io/modellbasierte-datenerfassung-handbuch/]
