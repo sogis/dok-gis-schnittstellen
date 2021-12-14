@@ -30,6 +30,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
       - name: Release 
         run: |
+          ls -la build/docs/asciidocPdf/
           ./gradlew jreleaserRelease
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
