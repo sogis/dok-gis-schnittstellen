@@ -1,6 +1,9 @@
 name: CI/CD
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -20,8 +23,13 @@ jobs:
           java-version: 11
       - name: Build with Gradle
         run: |
-          ./gradlew clean asciidoctorPdf jreleaserRelease
+          ./gradlew clean asciidoctorPdf
           ls -la build/docs/asciidocPdf/
+        env:
+          BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
+      - name: Release 
+        run: |
           ./gradlew jreleaserRelease
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
