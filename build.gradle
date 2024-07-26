@@ -55,6 +55,7 @@ pdfThemes {
     }
 }
 
+
 asciidoctorPdf {
     executionMode = JAVA_EXEC
 
