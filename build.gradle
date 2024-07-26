@@ -117,7 +117,7 @@ jreleaser {
     }
     release {
         github {
-            branch = 'master'
+            branch = 'main'
             //owner = 'sogis'
             overwrite = true
             apiEndpoint = 'https://api.github.com'
