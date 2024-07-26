@@ -1,37 +1,48 @@
 name: CI/CD
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
+    env:
+      BUILD_NUMBER: ${{ github.run_number }}
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/cache@v1
+      - name: Print new build number
+        run: echo "Build number is $BUILD_NUMBER"
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: 11
-      - name: Build with Gradle
-        run: |
-          ./gradlew clean asciidoctorPdf
-          ls -la build/docs/asciidocPdf/
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Build html and pdf output
+        run: ./gradlew clean asciidoctor asciidoctorPdf
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
-      - name: Release 
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy html output 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages 
+          FOLDER: build/docs/ 
+          #CLEAN: true 
+
+      - name: Deploy pdf output 🚀
         run: |
           ls -la build/docs/asciidocPdf/
-          ./gradlew jreleaserRelease -i -d
+          ./gradlew jreleaserRelease -s
         env:
           BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.JRELEASER_GITHUB_TOKEN }}
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
