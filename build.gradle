@@ -1,51 +1,96 @@
 plugins {
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    id 'org.asciidoctor.jvm.pdf' version '3.3.2'
-    id "de.undercouch.download" version "4.1.2"
-    id 'org.jreleaser' version '0.9.1'
+    id 'org.asciidoctor.jvm.convert' version '4.0.3'
+    id 'org.asciidoctor.jvm.pdf' version '4.0.3'
+    id "de.undercouch.download" version "5.6.0"
+    id 'org.jreleaser' version '1.13.1'
 }
 
 apply from: "$rootDir/gradle/versioning.gradle"
 
 repositories {
-    maven { url 'http://rubygems-proxy.torquebox.org/releases' }
     mavenCentral()
 }
 
 asciidoctor {
     sourceDir  file('src/docs/asciidoc')
     outputDir  file('build/docs')
+
+    asciidoctorj {
+        attributes 'encoding': 'utf-8',
+            'toc' : 'right',
+            'toc-title': 'Inhaltsverzeichnis',
+            'author': 'Amt für Geoinformation Kanton Solothurn',
+            'email': 'agi@bd.so.ch',
+            'chapter-label': '',
+            'sectnums':  '',
+            'sectlinks': '',
+            'sectanchors': '',
+            'figure-caption': 'Abbildung',
+            'stylesheet' : file('./sogis.css')
+
+        options doctype: 'book', ruby: 'erubis'
+    }
 }
 
-asciidoctorj {  // or asciidoctor.asciidoctorj
-    attributes \
-        revnumber : project.version,
-        imagesdir : "images"
-   options doctype: 'article', ruby: 'erubis'
+task downloadCss(type: Download) {
+    src([
+        'https://raw.githubusercontent.com/sogis/sogis-docs-asciidoctor-themes/master/html/sogis-simple/sogis.css'
+    ])
+    dest file("./sogis.css")
 }
+
+task deleteCss(type: Delete) {
+    delete './sogis.css'
+}
+
+asciidoctor.dependsOn downloadCss
+asciidoctor.finalizedBy deleteCss
 
 pdfThemes {
     github 'sogis-frutiger', { 
         organisation = 'sogis' 
         repository = 'sogis-docs-asciidoctor-themes' 
-        relativePath = 'sogis-frutiger' 
+        relativePath = 'pdf/sogis-frutiger' 
         branch = 'master' 
     }
 }
 
 asciidoctorPdf {
-    attributes \
-        imagesdir : "src/docs/asciidoc/images"
+    executionMode = JAVA_EXEC
+
+    forkOptions {
+       setMaxHeapSize '1024m'
+    }
+
+    asciidoctorj {
+        attributes 'imagesdir' : 'src/docs/asciidoc/images',
+            'toc' : '',
+            'toc-title' : 'Inhaltsverzeichnis',
+            'author': 'Amt für Geoinformation Kanton Solothurn',
+            'email': 'agi@bd.so.ch',
+            'figure-caption' : 'Abbildung',
+            'sectnums' : '',
+            'chapter-signifier' : '',
+            'revdate' : getDate()
+
+        options doctype: 'book', ruby: 'erubis'
+    }
+    
     theme 'sogis-frutiger'
-    fontsDir file("fonts/")
+    fontsDirs file("fonts/")
+
+    doLast {
+        file("${outputDir}/index.pdf").renameTo("${outputDir}/gis-schnittstellen.pdf")
+    }
 }
 
-task downloadFonts (type: Download) {
+// Fonts müssen vorhanden sein und können nicht mit der Theme mitgeliefert werden.
+task downloadFonts(type: Download) {
     src([
-        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/sogis-frutiger/fonts/frutiger-normal.ttf',
-        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/sogis-frutiger/fonts/frutiger-bold.ttf',
-        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/sogis-frutiger/fonts/frutiger-italic.ttf',
-        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/sogis-frutiger/fonts/frutiger-bold_italic.ttf'
+        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/pdf/sogis-frutiger/fonts/frutiger-normal.ttf',
+        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/pdf/sogis-frutiger/fonts/frutiger-bold.ttf',
+        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/pdf/sogis-frutiger/fonts/frutiger-italic.ttf',
+        'https://github.com/sogis/sogis-docs-asciidoctor-themes/raw/master/pdf/sogis-frutiger/fonts/frutiger-bold_italic.ttf'
     ])
     dest file("fonts/")
 }
@@ -56,6 +101,10 @@ task deleteFonts(type: Delete) {
 
 asciidoctorPdf.dependsOn downloadFonts
 asciidoctorPdf.finalizedBy deleteFonts
+
+def getDate() {
+    return new Date().format('yyyy-MM-dd HH:mm')
+}
 
 jreleaser {
     project {
@@ -68,7 +117,8 @@ jreleaser {
     }
     release {
         github {
-            owner = 'sogis'
+            branch = 'master'
+            //owner = 'sogis'
             overwrite = true
             apiEndpoint = 'https://api.github.com'
         }

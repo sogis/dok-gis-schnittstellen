@@ -1,18 +1,4 @@
 = GIS-Schnittstellen
-:encoding: utf-8
-:toc: right
-:toc-title: Inhaltsverzeichnis 
-:author_name: Amt für Geoinformation Kanton Solothurn
-:author_email: agi@bd.so.ch
-:author: {author_name}
-:email: {author_email}
-:title-page:
-:sectnums:
-:chapter-label:
-:sectlinks:
-:sectanchors:
-:revdate: {docdate}
-:figure-caption: Abbildung
 
 == Einleitung
 Das Amt für Geoinformation betreibt die kantonale Geodateninfrastruktur. Ein wichtiger Bestandteil dieser Infrastruktur ist die zentrale Datenhaltung. Die Geodaten der kantonalen Verwaltung werden in Datenbanken gespeichert, die durch das AGI betrieben werden.
@@ -100,12 +86,12 @@ Datenablage Import:
 
 - HTTP: Die Daten liegen auf einem für das AGI erreichbaren Server und können mittels HTTP-GET-Befehlen heruntergeladen werden.
 - (S)FTP: Die Daten liegen in einem vom Fachanwendungshersteller oder -betreiber bereitgestellten (S)FTP-Server.
-- Filesystem: Die Daten liegen auf einem für das AGI erreichbaren Filesystem des Kantons.
+- Filesystem: Die Daten liegen auf einem für GRETL erreichbaren Filesystem des Kantons.
 
 Datenablage Export:
 
 - (S)FTP: Die Daten werden vom AGI auf einen vom Fachanwendungshersteller bereitgestellten FTP-Server hochgeladen
-- Filesystem: Die Daten werden auf das Filesystem des AGI kopiert. 
+- Filesystem: Die Daten werden auf eines für GRETL erreichbare Filesystem geschrieben. 
 
 [#spezialfallgeojson]
 ==== Spezialfall (Geo)Json
