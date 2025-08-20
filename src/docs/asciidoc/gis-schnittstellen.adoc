@@ -77,14 +77,16 @@ Der Datenaustausch findet dateibasiert statt. Dateien können sowohl von der GDI
 Unterstützte Dateiformate: 
 
 - INTERLIS 1 und 2.3 <<modellierungshandbuch>>
+- (Geo)JSON
+- GeoPackage: siehe <<spezialfallgeopackage>>
 - ESRI Shapefiles
 - CSV (konfigurierbar)
-- (Geo)Json: siehe <<spezialfallgeojson>> 
-- GeoPackage: siehe <<spezialfallgeopackage>>
+
+Für ESRI Shapefiles und CSV stehen sowohl ein GRETL-Validierungstask wie auch ein Import- und Exporttask zur Verfügung. Obschon die Datenbankschemen mit ili2pg angelegt werden, entspricht der Funktionsumfang beim Import und Export nicht ili2pg (z.B. keine Berücksichtigung von reservierten Wörtern). Für JSON steht ein Validierungstask in GRETL zur Verfügung aber kein zu ESRI Shapefile und CSV analoger Import- und Exporttask. Es steht jedoch ein noch einfacherer Importtask zur Verfügung. Trotz dieser Einschränkungen soll bei der Wahl des Formates JSON vor CSV und ESRI Shapefile bevorzugt werden.
 
 Datenablage Import:
 
-- HTTP: Die Daten liegen auf einem für das AGI erreichbaren Server und können mittels HTTP-GET-Befehlen heruntergeladen werden.
+- HTTP: Die Daten liegen auf einem für das AGI erreichbaren Server und können mittels HTTP-GET-Befehlen heruntergeladen werden. Unterstützt werden Basic Auth und OAuth2.
 - (S)FTP: Die Daten liegen in einem vom Fachanwendungshersteller oder -betreiber bereitgestellten (S)FTP-Server.
 - Filesystem: Die Daten liegen auf einem für GRETL erreichbaren Filesystem des Kantons.
 
@@ -92,10 +94,6 @@ Datenablage Export:
 
 - (S)FTP: Die Daten werden vom AGI auf einen vom Fachanwendungshersteller bereitgestellten FTP-Server hochgeladen
 - Filesystem: Die Daten werden auf eines für GRETL erreichbare Filesystem geschrieben. 
-
-[#spezialfallgeojson]
-==== Spezialfall (Geo)Json
-Die Unterstützung von (Geo)Json in GRETL - analog Shapefiles und CSV - ist in Vorbereitung. Es besteht bereits die Möglichkeit mit einem einfacheren, bestehenden GRETL-Task die (Geo)Json-Datei in eine einzelne Text-Spalte in die Datenbank-Tabelle zu importieren und anschliessend mit Datenbankfunktionen zu prozessieren.
 
 [#spezialfallgeopackage]
 ==== Spezialfall GeoPackage
