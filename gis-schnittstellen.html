@@ -246,7 +246,7 @@ pre {
 <div class="details">
 <span id="author" class="author">Amt für Geoinformation Kanton Solothurn</span><br>
 <span id="email" class="email"><a href="mailto:agi@bd.so.ch">agi@bd.so.ch</a></span><br>
-<span id="revnumber">version 2.0.207</span>
+<span id="revnumber">version 2.0.208</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Inhaltsverzeichnis</div>
@@ -444,18 +444,21 @@ anderen Dokumenten beschrieben und zwingend zu konsultieren. Eine frühzeitige E
 <p>INTERLIS 1 und 2.3 <a href="#modellierungshandbuch">[modellierungshandbuch]</a></p>
 </li>
 <li>
+<p>(Geo)JSON</p>
+</li>
+<li>
+<p>GeoPackage: siehe <a href="#spezialfallgeopackage">Spezialfall GeoPackage</a></p>
+</li>
+<li>
 <p>ESRI Shapefiles</p>
 </li>
 <li>
 <p>CSV (konfigurierbar)</p>
 </li>
-<li>
-<p>(Geo)Json: siehe <a href="#spezialfallgeojson">Spezialfall (Geo)Json</a></p>
-</li>
-<li>
-<p>GeoPackage: siehe <a href="#spezialfallgeopackage">Spezialfall GeoPackage</a></p>
-</li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Für ESRI Shapefiles und CSV stehen sowohl ein GRETL-Validierungstask wie auch ein Import- und Exporttask zur Verfügung. Obschon die Datenbankschemen mit ili2pg angelegt werden, entspricht der Funktionsumfang beim Import und Export nicht ili2pg (z.B. keine Berücksichtigung von reservierten Wörtern). Für JSON steht ein Validierungstask in GRETL zur Verfügung aber kein zu ESRI Shapefile und CSV analoger Import- und Exporttask. Es steht jedoch ein noch einfacherer Importtask zur Verfügung. Trotz dieser Einschränkungen soll bei der Wahl des Formates JSON vor CSV und ESRI Shapefile bevorzugt werden.</p>
 </div>
 <div class="paragraph">
 <p>Datenablage Import:</p>
@@ -463,7 +466,7 @@ anderen Dokumenten beschrieben und zwingend zu konsultieren. Eine frühzeitige E
 <div class="ulist">
 <ul>
 <li>
-<p>HTTP: Die Daten liegen auf einem für das AGI erreichbaren Server und können mittels HTTP-GET-Befehlen heruntergeladen werden.</p>
+<p>HTTP: Die Daten liegen auf einem für das AGI erreichbaren Server und können mittels HTTP-GET-Befehlen heruntergeladen werden. Unterstützt werden Basic Auth und OAuth2.</p>
 </li>
 <li>
 <p>(S)FTP: Die Daten liegen in einem vom Fachanwendungshersteller oder -betreiber bereitgestellten (S)FTP-Server.</p>
@@ -487,13 +490,7 @@ anderen Dokumenten beschrieben und zwingend zu konsultieren. Eine frühzeitige E
 </ul>
 </div>
 <div class="sect3">
-<h4 id="spezialfallgeojson"><a class="anchor" href="#spezialfallgeojson"></a><a class="link" href="#spezialfallgeojson">3.6.1. Spezialfall (Geo)Json</a></h4>
-<div class="paragraph">
-<p>Die Unterstützung von (Geo)Json in GRETL - analog Shapefiles und CSV - ist in Vorbereitung. Es besteht bereits die Möglichkeit mit einem einfacheren, bestehenden GRETL-Task die (Geo)Json-Datei in eine einzelne Text-Spalte in die Datenbank-Tabelle zu importieren und anschliessend mit Datenbankfunktionen zu prozessieren.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="spezialfallgeopackage"><a class="anchor" href="#spezialfallgeopackage"></a><a class="link" href="#spezialfallgeopackage">3.6.2. Spezialfall GeoPackage</a></h4>
+<h4 id="spezialfallgeopackage"><a class="anchor" href="#spezialfallgeopackage"></a><a class="link" href="#spezialfallgeopackage">3.6.1. Spezialfall GeoPackage</a></h4>
 <div class="paragraph">
 <p>Analog für Shapefiles und CSV gibt es in GRETL (mit gleichen Einschränkungen) einen GeoPackage-Import und -Export-Task. Diese Variante ist aber dank der Möglichkeit mit ili2gpkg einfach INTERLIS-Daten aus GeoPackage-Dateien herzustellen, nicht empfehlenswert.</p>
 </div>
@@ -525,8 +522,8 @@ anderen Dokumenten beschrieben und zwingend zu konsultieren. Eine frühzeitige E
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2.0.207<br>
-Last updated 2024-07-26 13:49:47 UTC
+Version 2.0.208<br>
+Last updated 2025-08-20 07:31:23 UTC
 </div>
 </div>
 </body>
